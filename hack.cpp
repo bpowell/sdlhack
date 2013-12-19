@@ -8,8 +8,14 @@
 class Game{
 	private:
 		SDL_Window *window;
+		SDL_Renderer *renderer;
 	public:
 		bool valid;
+
+		SDL_Renderer *getRenderer(){
+			return renderer;
+		}
+
 		Game(){
 			if(SDL_Init(SDL_INIT_VIDEO) < 0){
 				valid = false;
@@ -31,6 +37,13 @@ class Game{
 				return;
 			}
 
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+			if(renderer==NULL){
+				valid = false;
+				return;
+			}
+
 			valid = true;
 		}
 
@@ -47,6 +60,9 @@ int main(int argc, char *argv[]){
 		std::cout << SDL_GetError() << std::endl;
 		return 1;
 	}
+
+	SDL_RenderPresent(game->getRenderer());
+	while(true){};
 
 	return 0;
 }
