@@ -33,6 +33,11 @@ class Game{
 
 			valid = true;
 		}
+
+		~Game(){
+			SDL_DestroyWindow(window);
+			SDL_Quit();
+		}
 };
 
 int main(int argc, char *argv[]){
