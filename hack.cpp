@@ -1,9 +1,39 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include <iostream>
+#include <string>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+
+class Sprite{
+	private:
+		SDL_Texture *texture;
+	public:
+		Sprite(SDL_Renderer *renderer, std::string path){
+			texture = NULL;
+			SDL_Surface *surface = IMG_Load(path.c_str());
+
+			if(surface==NULL){
+				std::cout << "Cannot load image " << path << std::endl;
+				return;
+			}
+
+			texture = SDL_CreateTextureFromSurface(renderer, surface);
+			if(texture==NULL){
+				std::cout << "Cannot load image " << path << std::endl;
+				return;
+			}
+
+			SDL_FreeSurface(surface);
+		}
+
+		~Sprite(){
+			if(texture!=NULL){
+				SDL_DestroyTexture(texture);
+			}
+		}
+};
 
 class Game{
 	private:
