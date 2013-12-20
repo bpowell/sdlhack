@@ -62,8 +62,19 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	SDL_RenderPresent(game->getRenderer());
-	while(true){};
+	SDL_Event event;
+	bool quit = false;
+
+	while(!quit){
+		while(SDL_PollEvent(&event)!=0){
+			if(event.type==SDL_QUIT)
+				quit = true;
+		}
+
+		SDL_RenderPresent(game->getRenderer());
+	}
+
+	delete game;
 
 	return 0;
 }
