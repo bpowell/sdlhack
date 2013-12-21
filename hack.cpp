@@ -8,9 +8,10 @@
 
 class Sprite{
 	private:
+		SDL_Renderer *renderer;
 		SDL_Texture *texture;
 	public:
-		Sprite(SDL_Renderer *renderer, std::string path){
+		Sprite(SDL_Renderer *renderer, std::string path) : renderer(renderer){
 			texture = NULL;
 			SDL_Surface *surface = IMG_Load(path.c_str());
 
@@ -32,6 +33,10 @@ class Sprite{
 			if(texture!=NULL){
 				SDL_DestroyTexture(texture);
 			}
+		}
+
+		void render(){
+			SDL_RenderCopy(renderer, texture, NULL, NULL);
 		}
 };
 
@@ -92,6 +97,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
+	Sprite *s = new Sprite(game->getRenderer(), "toons.png");
+
 	SDL_Event event;
 	bool quit = false;
 
@@ -101,6 +108,7 @@ int main(int argc, char *argv[]){
 				quit = true;
 		}
 
+		s->render();
 		SDL_RenderPresent(game->getRenderer());
 	}
 
