@@ -113,11 +113,17 @@ int main(int argc, char *argv[]){
 
 	SDL_Event event;
 	bool quit = false;
+	int mouse_x = 0, mouse_y = 0;
 
 	while(!quit){
 		while(SDL_PollEvent(&event)!=0){
 			if(event.type==SDL_QUIT)
 				quit = true;
+
+			if(event.type==SDL_MOUSEBUTTONDOWN || event.type==SDL_MOUSEBUTTONUP){
+				SDL_GetMouseState(&mouse_x, &mouse_y);
+				std::cout << mouse_x << "\t" << mouse_y << std::endl;
+			}
 		}
 
 		s->render();
