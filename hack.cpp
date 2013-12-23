@@ -14,6 +14,8 @@ class Sprite{
 		int max_x;
 		int max_y;
 		int default_clip;
+		SDL_Rect srcrect;
+		SDL_Rect dstrect;
 	public:
 		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, int max_x, int max_y, int default_clip) 
 			: renderer(renderer), size(size), max_x(max_x), max_y(max_y), default_clip(default_clip){
@@ -37,6 +39,10 @@ class Sprite{
 			}
 
 			SDL_FreeSurface(surface);
+
+			srcrect.x = size.w * default_clip;
+			srcrect.y = 0;
+			srcrect.w = srcrect.h = 32;
 		}
 
 		~Sprite(){
@@ -46,7 +52,7 @@ class Sprite{
 		}
 
 		void render(){
-			SDL_RenderCopy(renderer, texture, NULL, NULL);
+			SDL_RenderCopy(renderer, texture, &srcrect, NULL);
 		}
 };
 
@@ -108,8 +114,9 @@ int main(int argc, char *argv[]){
 	}
 
 	SDL_Rect size;
-	size.x = size.y = 40;
-	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, 12, 8, 0);
+	size.x = size.y = 0;
+	size.w = size.h = 32;
+	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, 4, 1, 0);
 
 	SDL_Event event;
 	bool quit = false;
