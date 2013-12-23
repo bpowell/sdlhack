@@ -175,6 +175,8 @@ int main(int argc, char *argv[]){
 
 			if(event.type==SDL_MOUSEBUTTONDOWN){
 				MOUSE_DOWN = 1;
+				SDL_GetMouseState(&mouse_x, &mouse_y);
+				s->update(mouse_x, mouse_y);
 			}
 
 			if(event.type==SDL_MOUSEBUTTONUP){
