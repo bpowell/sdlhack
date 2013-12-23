@@ -6,6 +6,10 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 static char MOUSE_DOWN  = 0;
+#define HERO_UP 	0
+#define HERO_DOWN	1
+#define HERO_LEFT	2
+#define HERO_RIGHT	3
 
 class Sprite{
 	protected:
@@ -15,6 +19,13 @@ class Sprite{
 		int default_clip;
 		SDL_Rect srcrect;
 		SDL_Rect location;
+
+		void switch_clip(int clip){
+			srcrect.x = size.w * clip;
+			srcrect.y = 0;
+			srcrect.w = srcrect.h = 32;
+		}
+
 	public:
 		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) 
 			: renderer(renderer), size(size), location(location), default_clip(default_clip){
@@ -39,9 +50,7 @@ class Sprite{
 
 			SDL_FreeSurface(surface);
 
-			srcrect.x = size.w * default_clip;
-			srcrect.y = 0;
-			srcrect.w = srcrect.h = 32;
+			switch_clip(default_clip);
 		}
 
 		~Sprite(){
@@ -74,14 +83,18 @@ class HeroSprite : public Sprite{
 
 			if(xdir < 0){
 				location.x--;
+				switch_clip(HERO_LEFT);
 			}else{
 				location.x++;
+				switch_clip(HERO_RIGHT);
 			}
 
 			if(ydir < 0){
 				location.y--;
+				switch_clip(HERO_UP);
 			}else{
 				location.y++;
+				switch_clip(HERO_DOWN);
 			}
 		}
 };
@@ -149,7 +162,7 @@ int main(int argc, char *argv[]){
 	SDL_Rect loc;
 	loc.x = loc.y = 10;
 	loc.w = loc.h = 42;
-	HeroSprite *s = new HeroSprite(game->getRenderer(), "toons.png", size, loc, 0);
+	HeroSprite *s = new HeroSprite(game->getRenderer(), "toons.png", size, loc, HERO_UP);
 
 	SDL_Event event;
 	bool quit = false;
