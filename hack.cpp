@@ -175,6 +175,7 @@ int main(int argc, char *argv[]){
 			}
 		}
 
+		SDL_RenderClear(game->getRenderer());
 		s->render();
 		SDL_RenderPresent(game->getRenderer());
 	}
