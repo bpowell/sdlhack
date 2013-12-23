@@ -7,7 +7,7 @@
 #define SCREEN_HEIGHT 480
 
 class Sprite{
-	private:
+	protected:
 		SDL_Renderer *renderer;
 		SDL_Texture *texture;
 		SDL_Rect size;
@@ -51,6 +51,20 @@ class Sprite{
 
 		void render(){
 			SDL_RenderCopy(renderer, texture, &srcrect, &location);
+		}
+
+		virtual void update(){
+		}
+};
+
+class HeroSprite : public Sprite{
+	public:
+		HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+			Sprite(renderer, path, size, location, default_clip){
+			}
+
+		void update(){
+			std::cout << "Update" << std::endl;
 		}
 };
 
