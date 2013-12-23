@@ -11,14 +11,12 @@ class Sprite{
 		SDL_Renderer *renderer;
 		SDL_Texture *texture;
 		SDL_Rect size;
-		int max_x;
-		int max_y;
 		int default_clip;
 		SDL_Rect srcrect;
 		SDL_Rect dstrect;
 	public:
-		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, int max_x, int max_y, int default_clip) 
-			: renderer(renderer), size(size), max_x(max_x), max_y(max_y), default_clip(default_clip){
+		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, int default_clip) 
+			: renderer(renderer), size(size), default_clip(default_clip){
 			texture = NULL;
 			SDL_Surface *surface = IMG_Load(path.c_str());
 
@@ -27,7 +25,7 @@ class Sprite{
 				return;
 			}
 
-			if(default_clip<0 || default_clip>(max_x*max_y)){
+			if(default_clip<0){
 				std::cout << "Cannot load clip from image " << path << std::endl;
 				return;
 			}
@@ -116,7 +114,7 @@ int main(int argc, char *argv[]){
 	SDL_Rect size;
 	size.x = size.y = 0;
 	size.w = size.h = 32;
-	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, 4, 1, 0);
+	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, 0);
 
 	SDL_Event event;
 	bool quit = false;
