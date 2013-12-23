@@ -5,6 +5,7 @@
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+static char MOUSE_DOWN  = 0;
 
 class Sprite{
 	protected:
@@ -63,8 +64,9 @@ class HeroSprite : public Sprite{
 			Sprite(renderer, path, size, location, default_clip){
 			}
 
-		void update(){
-			std::cout << "Update" << std::endl;
+		void update(int mx, int my){
+			std::cout << "Update: " << mx << ":" << my << std::endl;
+			std::cout << "Location: " << location.x << ":" << location.y << std::endl;
 		}
 };
 
@@ -131,7 +133,7 @@ int main(int argc, char *argv[]){
 	SDL_Rect loc;
 	loc.x = loc.y = 10;
 	loc.w = loc.h = 42;
-	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, loc, 0);
+	HeroSprite *s = new HeroSprite(game->getRenderer(), "toons.png", size, loc, 0);
 
 	SDL_Event event;
 	bool quit = false;
@@ -142,9 +144,18 @@ int main(int argc, char *argv[]){
 			if(event.type==SDL_QUIT)
 				quit = true;
 
-			if(event.type==SDL_MOUSEBUTTONDOWN || event.type==SDL_MOUSEBUTTONUP){
+			if(event.type==SDL_MOUSEBUTTONDOWN){
+				MOUSE_DOWN = 1;
+			}
+
+			if(event.type==SDL_MOUSEBUTTONUP){
+				MOUSE_DOWN = 0;
+			}
+
+			if(event.type==SDL_MOUSEMOTION && MOUSE_DOWN==1){
 				SDL_GetMouseState(&mouse_x, &mouse_y);
 				std::cout << mouse_x << "\t" << mouse_y << std::endl;
+				s->update(mouse_x, mouse_y);
 			}
 		}
 
