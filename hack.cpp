@@ -13,10 +13,10 @@ class Sprite{
 		SDL_Rect size;
 		int default_clip;
 		SDL_Rect srcrect;
-		SDL_Rect dstrect;
+		SDL_Rect location;
 	public:
-		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, int default_clip) 
-			: renderer(renderer), size(size), default_clip(default_clip){
+		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) 
+			: renderer(renderer), size(size), location(location), default_clip(default_clip){
 			texture = NULL;
 			SDL_Surface *surface = IMG_Load(path.c_str());
 
@@ -50,7 +50,7 @@ class Sprite{
 		}
 
 		void render(){
-			SDL_RenderCopy(renderer, texture, &srcrect, NULL);
+			SDL_RenderCopy(renderer, texture, &srcrect, &location);
 		}
 };
 
@@ -114,7 +114,10 @@ int main(int argc, char *argv[]){
 	SDL_Rect size;
 	size.x = size.y = 0;
 	size.w = size.h = 32;
-	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, 0);
+	SDL_Rect loc;
+	loc.x = loc.y = 10;
+	loc.w = loc.h = 42;
+	Sprite *s = new Sprite(game->getRenderer(), "toons.png", size, loc, 0);
 
 	SDL_Event event;
 	bool quit = false;
