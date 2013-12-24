@@ -160,8 +160,13 @@ int main(int argc, char *argv[]){
 	size.w = size.h = 32;
 	SDL_Rect loc;
 	loc.x = loc.y = 10;
-	loc.w = loc.h = 42;
+	loc.w = loc.h = 32;
 	HeroSprite *s = new HeroSprite(game->getRenderer(), "toons.png", size, loc, HERO_UP);
+
+	SDL_Rect loc2;
+	loc2.x = loc2.y = 60;
+	loc2.w = loc2.h = 32;
+	Sprite *mob = new Sprite(game->getRenderer(), "toons.png", size, loc2, HERO_UP);
 
 	SDL_Event event;
 	bool quit = false;
@@ -191,6 +196,7 @@ int main(int argc, char *argv[]){
 
 		SDL_RenderClear(game->getRenderer());
 		s->render();
+		mob->render();
 		SDL_RenderPresent(game->getRenderer());
 	}
 
