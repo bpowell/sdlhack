@@ -18,9 +18,9 @@ class Sprite{
 		SDL_Renderer *renderer;
 		SDL_Texture *texture;
 		SDL_Rect size;
+		SDL_Rect location;
 		int default_clip;
 		SDL_Rect srcrect;
-		SDL_Rect location;
 
 		void switch_clip(int clip){
 			srcrect.x = size.w * clip;
@@ -86,6 +86,7 @@ class HeroSprite : public Sprite{
 			Sprite(renderer, path, size, location, default_clip){
 			}
 
+		using Sprite::update;
 		void update(int mx, int my){
 			int xdir = mx-location.x;
 			int ydir = my-location.y;
@@ -168,7 +169,7 @@ class Game{
 		}
 };
 
-int main(int argc, char *argv[]){
+int main(){
 	Game *game = new Game();
 	if(game->valid==false){
 		std::cout << "SDL failed to initialize." << std::endl;
