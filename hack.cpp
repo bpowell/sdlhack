@@ -75,35 +75,23 @@ class HeroSprite : public Sprite{
 			}
 
 		void update(int mx, int my){
-			std::cout << "Update: " << mx << ":" << my << std::endl;
-			std::cout << "Location: " << location.x << ":" << location.y;
-			std::cout << ":" << location.w << ":" << location.h << std::endl;
-
 			int xdir = mx-location.x;
 			int ydir = my-location.y;
 
-			if(xdir < 0){
-				location.x--;
-			}else{
-				location.x++;
-			}
-
-			if(ydir < 0){
-				location.y--;
-			}else{
-				location.y++;
-			}
-
 			if(abs(xdir)>abs(ydir)){
 				if(xdir>0){
+					location.x++;
 					switch_clip(HERO_RIGHT);
 				}else{
+					location.x--;
 					switch_clip(HERO_LEFT);
 				}
 			}else{
 				if(ydir>0){
 					switch_clip(HERO_DOWN);
+					location.y++;
 				}else{
+					location.y--;
 					switch_clip(HERO_UP);
 				}
 			}
