@@ -2,6 +2,7 @@
 #include "SDL2/SDL_image.h"
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -83,18 +84,28 @@ class HeroSprite : public Sprite{
 
 			if(xdir < 0){
 				location.x--;
-				switch_clip(HERO_LEFT);
 			}else{
 				location.x++;
-				switch_clip(HERO_RIGHT);
 			}
 
 			if(ydir < 0){
 				location.y--;
-				switch_clip(HERO_UP);
 			}else{
 				location.y++;
-				switch_clip(HERO_DOWN);
+			}
+
+			if(abs(xdir)>abs(ydir)){
+				if(xdir>0){
+					switch_clip(HERO_RIGHT);
+				}else{
+					switch_clip(HERO_LEFT);
+				}
+			}else{
+				if(ydir>0){
+					switch_clip(HERO_DOWN);
+				}else{
+					switch_clip(HERO_UP);
+				}
 			}
 		}
 };
