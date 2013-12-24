@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <vector>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -66,6 +67,17 @@ class Sprite{
 
 		virtual void update(){
 		}
+
+		SDL_Rect get_location(){
+			return location;
+		}
+};
+
+class MobSprite : public Sprite{
+	public:
+		MobSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+			Sprite(renderer, path, size, location, default_clip){
+			}
 };
 
 class HeroSprite : public Sprite{
@@ -93,6 +105,15 @@ class HeroSprite : public Sprite{
 				}else{
 					location.y--;
 					switch_clip(HERO_UP);
+				}
+			}
+		}
+
+		void check_collision(std::vector<MobSprite*> mobs){
+			for(std::vector<MobSprite*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+				SDL_Rect temp = (*it)->get_location();
+				if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
+					std::cout << "We touched!\n";
 				}
 			}
 		}
