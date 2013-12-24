@@ -177,6 +177,8 @@ int main(){
 		return 1;
 	}
 
+	std::vector<MobSprite*> mobs;
+
 	SDL_Rect size;
 	size.x = size.y = 0;
 	size.w = size.h = 32;
@@ -188,7 +190,8 @@ int main(){
 	SDL_Rect loc2;
 	loc2.x = loc2.y = 60;
 	loc2.w = loc2.h = 32;
-	Sprite *mob = new Sprite(game->getRenderer(), "toons.png", size, loc2, HERO_UP);
+	MobSprite *mob = new MobSprite(game->getRenderer(), "toons.png", size, loc2, HERO_UP);
+	mobs.push_back(mob);
 
 	SDL_Event event;
 	bool quit = false;
@@ -215,9 +218,14 @@ int main(){
 			}
 		}
 
+		s->check_collision(mobs);
+
 		SDL_RenderClear(game->getRenderer());
 		s->render();
-		mob->render();
+		for(std::vector<MobSprite*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+			(*it)->render();
+		}
+
 		SDL_RenderPresent(game->getRenderer());
 	}
 
