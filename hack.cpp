@@ -189,7 +189,6 @@ int main(int argc, char *argv[]){
 
 			if(event.type==SDL_MOUSEMOTION && MOUSE_DOWN==1){
 				SDL_GetMouseState(&mouse_x, &mouse_y);
-				std::cout << mouse_x << "\t" << mouse_y << std::endl;
 				s->update(mouse_x, mouse_y);
 			}
 		}
