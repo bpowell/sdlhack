@@ -13,6 +13,24 @@ static char MOUSE_DOWN  = 0;
 #define HERO_LEFT	2
 #define HERO_RIGHT	3
 
+typedef int StatPoint;
+
+class Person{
+	protected:
+		StatPoint strength;
+		StatPoint attack;
+		StatPoint defense;
+		StatPoint vitality;
+
+	public:
+		Person(){
+			strength = 10;
+			attack = 10;
+			defense = 10;
+			vitality = 10;
+		}
+};
+
 class Sprite{
 	protected:
 		SDL_Renderer *renderer;
