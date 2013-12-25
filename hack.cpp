@@ -98,6 +98,13 @@ class MobSprite : public Sprite{
 			}
 };
 
+class Mob : public MobSprite, public Person{
+	public:
+		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+			MobSprite(renderer, path, size, location, default_clip){
+			}
+};
+
 class HeroSprite : public Sprite{
 	public:
 		HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
@@ -128,14 +135,21 @@ class HeroSprite : public Sprite{
 			}
 		}
 
-		void check_collision(std::vector<MobSprite*> mobs){
-			for(std::vector<MobSprite*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+		void check_collision(std::vector<Mob*> mobs){
+			for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
 				SDL_Rect temp = (*it)->get_location();
 				if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
 					std::cout << "We touched!\n";
 				}
 			}
 		}
+};
+
+class Hero: public HeroSprite, public Person{
+	public:
+		Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+			HeroSprite(renderer, path, size, location, default_clip){
+			}
 };
 
 class Game{
@@ -195,7 +209,7 @@ int main(){
 		return 1;
 	}
 
-	std::vector<MobSprite*> mobs;
+	std::vector<Mob*> mobs;
 
 	SDL_Rect size;
 	size.x = size.y = 0;
@@ -203,12 +217,12 @@ int main(){
 	SDL_Rect loc;
 	loc.x = loc.y = 10;
 	loc.w = loc.h = 32;
-	HeroSprite *s = new HeroSprite(game->getRenderer(), "toons.png", size, loc, HERO_UP);
+	Hero *s = new Hero(game->getRenderer(), "toons.png", size, loc, HERO_UP);
 
 	SDL_Rect loc2;
 	loc2.x = loc2.y = 60;
 	loc2.w = loc2.h = 32;
-	MobSprite *mob = new MobSprite(game->getRenderer(), "toons.png", size, loc2, HERO_UP);
+	Mob *mob = new Mob(game->getRenderer(), "toons.png", size, loc2, HERO_UP);
 	mobs.push_back(mob);
 
 	SDL_Event event;
@@ -240,7 +254,7 @@ int main(){
 
 		SDL_RenderClear(game->getRenderer());
 		s->render();
-		for(std::vector<MobSprite*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+		for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
 			(*it)->render();
 		}
 
