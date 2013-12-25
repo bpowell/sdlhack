@@ -89,8 +89,7 @@ class Sprite{
 			SDL_RenderCopy(renderer, texture, &srcrect, &location);
 		}
 
-		virtual void update(){
-		}
+		virtual void update(int mx, int my) = 0;
 
 		SDL_Rect get_location(){
 			return location;
@@ -110,7 +109,15 @@ class Mob : public MobSprite, public Person{
 			MobSprite(renderer, path, size, location, default_clip){
 			}
 
-		void update(){
+		void update(int mx, int my){
+			SDL_Rect mouse;
+			mouse.x = mouse.w = mx;
+			mouse.y = mouse.h = my;
+
+			if(SDL_HasIntersection(&location, &mouse) && MOUSE_DOWN==1){
+				std::cout << "I've been touched!\n";
+			}
+
 			if(is_fighting==true){
 				std::cout << "We be fighting\n";
 			}
@@ -123,7 +130,6 @@ class HeroSprite : public Sprite{
 			Sprite(renderer, path, size, location, default_clip){
 			}
 
-		using Sprite::update;
 		void update(int mx, int my){
 			int xdir = mx-location.x;
 			int ydir = my-location.y;
@@ -162,7 +168,7 @@ class Hero: public HeroSprite, public Person{
 					(*it)->set_fighting(true);
 					is_fighting = true;
 				}else{
-					(*it)->set_fighting(true);
+					(*it)->set_fighting(false);
 					is_fighting = false;
 				}
 			}
@@ -248,12 +254,13 @@ int main(){
 
 	while(!quit){
 		while(SDL_PollEvent(&event)!=0){
+			SDL_GetMouseState(&mouse_x, &mouse_y);
+
 			if(event.type==SDL_QUIT)
 				quit = true;
 
 			if(event.type==SDL_MOUSEBUTTONDOWN){
 				MOUSE_DOWN = 1;
-				SDL_GetMouseState(&mouse_x, &mouse_y);
 				s->update(mouse_x, mouse_y);
 			}
 
@@ -272,7 +279,7 @@ int main(){
 		SDL_RenderClear(game->getRenderer());
 		s->render();
 		for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
-			(*it)->update();
+			(*it)->update(mouse_x, mouse_y);
 			(*it)->render();
 		}
 
