@@ -21,6 +21,7 @@ class Person{
 		StatPoint attack;
 		StatPoint defense;
 		StatPoint vitality;
+		bool is_fighting;
 
 	public:
 		Person(){
@@ -28,6 +29,11 @@ class Person{
 			attack = 10;
 			defense = 10;
 			vitality = 10;
+			is_fighting = false;
+		}
+
+		void set_fighting(bool fight){
+			is_fighting = fight;
 		}
 };
 
@@ -103,6 +109,12 @@ class Mob : public MobSprite, public Person{
 		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
 			MobSprite(renderer, path, size, location, default_clip){
 			}
+
+		void update(){
+			if(is_fighting==true){
+				std::cout << "We be fighting\n";
+			}
+		}
 };
 
 class HeroSprite : public Sprite{
@@ -134,15 +146,6 @@ class HeroSprite : public Sprite{
 				}
 			}
 		}
-
-		void check_collision(std::vector<Mob*> mobs){
-			for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
-				SDL_Rect temp = (*it)->get_location();
-				if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
-					std::cout << "We touched!\n";
-				}
-			}
-		}
 };
 
 class Hero: public HeroSprite, public Person{
@@ -150,6 +153,20 @@ class Hero: public HeroSprite, public Person{
 		Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
 			HeroSprite(renderer, path, size, location, default_clip){
 			}
+
+		void check_collision(std::vector<Mob*> mobs){
+			for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+				SDL_Rect temp = (*it)->get_location();
+				if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
+					std::cout << "We touched!\n";
+					(*it)->set_fighting(true);
+					is_fighting = true;
+				}else{
+					(*it)->set_fighting(true);
+					is_fighting = false;
+				}
+			}
+		}
 };
 
 class Game{
@@ -255,6 +272,7 @@ int main(){
 		SDL_RenderClear(game->getRenderer());
 		s->render();
 		for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+			(*it)->update();
 			(*it)->render();
 		}
 
