@@ -27,64 +27,51 @@ void Person::set_fighting(bool fight){
 	is_fighting = fight;
 }
 
-class Sprite{
-	protected:
-		SDL_Renderer *renderer;
-		SDL_Texture *texture;
-		SDL_Rect size;
-		SDL_Rect location;
-		int default_clip;
-		SDL_Rect srcrect;
+void Sprite::switch_clip(int clip){
+	srcrect.x = size.w * clip;
+	srcrect.y = 0;
+	srcrect.w = srcrect.h = 32;
+}
 
-		void switch_clip(int clip){
-			srcrect.x = size.w * clip;
-			srcrect.y = 0;
-			srcrect.w = srcrect.h = 32;
+Sprite::Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) 
+	: renderer(renderer), size(size), location(location), default_clip(default_clip){
+		texture = NULL;
+		SDL_Surface *surface = IMG_Load(path.c_str());
+
+		if(surface==NULL){
+			std::cout << "Cannot load image " << path << std::endl;
+			return;
 		}
 
-	public:
-		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) 
-			: renderer(renderer), size(size), location(location), default_clip(default_clip){
-			texture = NULL;
-			SDL_Surface *surface = IMG_Load(path.c_str());
-
-			if(surface==NULL){
-				std::cout << "Cannot load image " << path << std::endl;
-				return;
-			}
-
-			if(default_clip<0){
-				std::cout << "Cannot load clip from image " << path << std::endl;
-				return;
-			}
-
-			texture = SDL_CreateTextureFromSurface(renderer, surface);
-			if(texture==NULL){
-				std::cout << "Cannot load image " << path << std::endl;
-				return;
-			}
-
-			SDL_FreeSurface(surface);
-
-			switch_clip(default_clip);
+		if(default_clip<0){
+			std::cout << "Cannot load clip from image " << path << std::endl;
+			return;
 		}
 
-		~Sprite(){
-			if(texture!=NULL){
-				SDL_DestroyTexture(texture);
-			}
+		texture = SDL_CreateTextureFromSurface(renderer, surface);
+		if(texture==NULL){
+			std::cout << "Cannot load image " << path << std::endl;
+			return;
 		}
 
-		void render(){
-			SDL_RenderCopy(renderer, texture, &srcrect, &location);
-		}
+		SDL_FreeSurface(surface);
 
-		virtual void update(int mx, int my) = 0;
+		switch_clip(default_clip);
+	}
 
-		SDL_Rect get_location(){
-			return location;
-		}
-};
+Sprite::~Sprite(){
+	if(texture!=NULL){
+		SDL_DestroyTexture(texture);
+	}
+}
+
+void Sprite::render(){
+	SDL_RenderCopy(renderer, texture, &srcrect, &location);
+}
+
+SDL_Rect Sprite::get_location(){
+	return location;
+}
 
 class MobSprite : public Sprite{
 	public:
