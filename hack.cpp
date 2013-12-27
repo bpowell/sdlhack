@@ -5,6 +5,8 @@
 #include <cmath>
 #include <vector>
 
+#include "hack.h"
+
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 static char MOUSE_DOWN  = 0;
@@ -13,29 +15,17 @@ static char MOUSE_DOWN  = 0;
 #define HERO_LEFT	2
 #define HERO_RIGHT	3
 
-typedef int StatPoint;
+Person::Person(){
+	strength = 10;
+	attack = 10;
+	defense = 10;
+	vitality = 10;
+	is_fighting = false;
+}
 
-class Person{
-	protected:
-		StatPoint strength;
-		StatPoint attack;
-		StatPoint defense;
-		StatPoint vitality;
-		bool is_fighting;
-
-	public:
-		Person(){
-			strength = 10;
-			attack = 10;
-			defense = 10;
-			vitality = 10;
-			is_fighting = false;
-		}
-
-		void set_fighting(bool fight){
-			is_fighting = fight;
-		}
-};
+void Person::set_fighting(bool fight){
+	is_fighting = fight;
+}
 
 class Sprite{
 	protected:
@@ -103,19 +93,23 @@ class MobSprite : public Sprite{
 			}
 };
 
+class Hero;
+
 class Mob : public MobSprite, public Person{
 	public:
 		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
 			MobSprite(renderer, path, size, location, default_clip){
 			}
 
-		void update(int mx, int my){
+		using Sprite::update;
+		void update(int mx, int my, Hero **hero){
 			SDL_Rect mouse;
 			mouse.x = mouse.w = mx;
 			mouse.y = mouse.h = my;
 
 			if(SDL_HasIntersection(&location, &mouse) && MOUSE_DOWN==1){
 				std::cout << "I've been touched!\n";
+				(**hero)->set_fighting(true);
 			}
 
 			if(is_fighting==true){
@@ -279,7 +273,7 @@ int main(){
 		SDL_RenderClear(game->getRenderer());
 		s->render();
 		for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
-			(*it)->update(mouse_x, mouse_y);
+			(*it)->update(mouse_x, mouse_y, &s);
 			(*it)->render();
 		}
 
