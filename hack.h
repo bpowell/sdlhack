@@ -45,4 +45,11 @@ class MobSprite : public Sprite{
 		MobSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 };
 
+class HeroSprite : public Sprite{
+	public:
+		HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
+
+		void update(int mx, int my);
+};
+
 #endif

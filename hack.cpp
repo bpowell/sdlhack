@@ -102,35 +102,32 @@ class Mob : public MobSprite, public Person{
 		}
 };
 
-class HeroSprite : public Sprite{
-	public:
-		HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
-			Sprite(renderer, path, size, location, default_clip){
-			}
+HeroSprite::HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+	Sprite(renderer, path, size, location, default_clip){
+}
 
-		void update(int mx, int my){
-			int xdir = mx-location.x;
-			int ydir = my-location.y;
+void HeroSprite::update(int mx, int my){
+	int xdir = mx-location.x;
+	int ydir = my-location.y;
 
-			if(abs(xdir)>abs(ydir)){
-				if(xdir>0){
-					location.x++;
-					switch_clip(HERO_RIGHT);
-				}else{
-					location.x--;
-					switch_clip(HERO_LEFT);
-				}
-			}else{
-				if(ydir>0){
-					switch_clip(HERO_DOWN);
-					location.y++;
-				}else{
-					location.y--;
-					switch_clip(HERO_UP);
-				}
-			}
+	if(abs(xdir)>abs(ydir)){
+		if(xdir>0){
+			location.x++;
+			switch_clip(HERO_RIGHT);
+		}else{
+			location.x--;
+			switch_clip(HERO_LEFT);
 		}
-};
+	}else{
+		if(ydir>0){
+			switch_clip(HERO_DOWN);
+			location.y++;
+		}else{
+			location.y--;
+			switch_clip(HERO_UP);
+		}
+	}
+}
 
 class Hero: public HeroSprite, public Person{
 	public:
