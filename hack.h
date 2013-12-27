@@ -40,4 +40,9 @@ class Sprite{
 		void render();
 };
 
+class MobSprite : public Sprite{
+	public:
+		MobSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
+};
+
 #endif

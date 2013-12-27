@@ -73,12 +73,9 @@ SDL_Rect Sprite::get_location(){
 	return location;
 }
 
-class MobSprite : public Sprite{
-	public:
-		MobSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
-			Sprite(renderer, path, size, location, default_clip){
-			}
-};
+MobSprite::MobSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+	Sprite(renderer, path, size, location, default_clip){
+}
 
 class Hero;
 
