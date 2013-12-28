@@ -123,26 +123,23 @@ void HeroSprite::update(int mx, int my){
 	}
 }
 
-class Hero: public HeroSprite, public Person{
-	public:
-		Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
-			HeroSprite(renderer, path, size, location, default_clip){
-			}
+Hero::Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+	HeroSprite(renderer, path, size, location, default_clip){
+}
 
-		void check_collision(std::vector<Mob*> mobs){
-			for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
-				SDL_Rect temp = (*it)->get_location();
-				if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
-					std::cout << "We touched!\n";
-					(*it)->set_fighting(true);
-					is_fighting = true;
-				}else{
-					(*it)->set_fighting(false);
-					is_fighting = false;
-				}
-			}
+void Hero::check_collision(std::vector<Mob*> mobs){
+	for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+		SDL_Rect temp = (*it)->get_location();
+		if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
+			std::cout << "We touched!\n";
+			(*it)->set_fighting(true);
+			is_fighting = true;
+		}else{
+			(*it)->set_fighting(false);
+			is_fighting = false;
 		}
-};
+	}
+}
 
 class Game{
 	private:
