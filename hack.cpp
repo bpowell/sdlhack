@@ -77,30 +77,24 @@ MobSprite::MobSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SD
 	Sprite(renderer, path, size, location, default_clip){
 }
 
-class Hero;
+Mob::Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
+	MobSprite(renderer, path, size, location, default_clip){
+}
 
-class Mob : public MobSprite, public Person{
-	public:
-		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
-			MobSprite(renderer, path, size, location, default_clip){
-			}
+void Mob::update(int mx, int my, Hero **hero){
+	SDL_Rect mouse;
+	mouse.x = mouse.w = mx;
+	mouse.y = mouse.h = my;
 
-		using Sprite::update;
-		void update(int mx, int my, Hero **hero){
-			SDL_Rect mouse;
-			mouse.x = mouse.w = mx;
-			mouse.y = mouse.h = my;
+	if(SDL_HasIntersection(&location, &mouse) && MOUSE_DOWN==1){
+		std::cout << "I've been touched!\n";
+		(**hero)->set_fighting(true);
+	}
 
-			if(SDL_HasIntersection(&location, &mouse) && MOUSE_DOWN==1){
-				std::cout << "I've been touched!\n";
-				(**hero)->set_fighting(true);
-			}
-
-			if(is_fighting==true){
-				std::cout << "We be fighting\n";
-			}
-		}
-};
+	if(is_fighting==true){
+		std::cout << "We be fighting\n";
+	}
+}
 
 HeroSprite::HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
 	Sprite(renderer, path, size, location, default_clip){

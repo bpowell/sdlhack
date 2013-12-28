@@ -52,4 +52,13 @@ class HeroSprite : public Sprite{
 		void update(int mx, int my);
 };
 
+class Hero;
+
+class Mob : public MobSprite, public Person{
+	public:
+		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
+		using Sprite::update;
+		void update(int mx, int my, Hero **hero);
+};
+
 #endif
