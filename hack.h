@@ -59,8 +59,8 @@ class Mob : public MobSprite, public Person{
 	public:
 		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 
-		using Sprite::update;
 		void update(int mx, int my, std::shared_ptr<Hero> hero);
+		void update(int mx, int my);
 };
 
 class Hero: public HeroSprite, public Person{

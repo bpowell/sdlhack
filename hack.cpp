@@ -81,6 +81,11 @@ Mob::Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect locat
 	MobSprite(renderer, path, size, location, default_clip){
 }
 
+void Mob::update(int mx, int my){
+	mx = mx + my;
+	return;
+}
+
 void Mob::update(int mx, int my, std::shared_ptr<Hero> hero){
 	SDL_Rect mouse;
 	mouse.x = mouse.w = mx;
