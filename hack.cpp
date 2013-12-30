@@ -27,6 +27,10 @@ void Person::set_fighting(bool fight){
 	is_fighting = fight;
 }
 
+bool Person::get_fighting(){
+	return is_fighting;
+}
+
 void Sprite::switch_clip(int clip){
 	srcrect.x = size.w * clip;
 	srcrect.y = 0;
@@ -130,6 +134,14 @@ void HeroSprite::update(int mx, int my){
 
 Hero::Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip) :
 	HeroSprite(renderer, path, size, location, default_clip){
+}
+
+void Hero::update(int mx, int my){
+	HeroSprite::update(mx, my);
+
+	if(get_fighting()==true){
+		std::cout << "Hero is fighting\n";
+	}
 }
 
 void Hero::check_collision(std::vector<std::shared_ptr<Mob>> mobs){

@@ -20,6 +20,7 @@ class Person{
 		Person();
 
 		void set_fighting(bool fight);
+		bool get_fighting();
 };
 
 class Sprite{
@@ -67,6 +68,7 @@ class Hero: public HeroSprite, public Person{
 	public:
 		Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 		void check_collision(std::vector<std::shared_ptr<Mob>> mobs);
+		void update(int mx, int my);
 };
 
 #endif
