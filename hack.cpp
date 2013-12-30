@@ -127,8 +127,8 @@ Hero::Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect loc
 	HeroSprite(renderer, path, size, location, default_clip){
 }
 
-void Hero::check_collision(std::vector<Mob*> mobs){
-	for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+void Hero::check_collision(std::vector<std::shared_ptr<Mob>> mobs){
+	for(std::vector<std::shared_ptr<Mob>>::iterator it = mobs.begin(); it != mobs.end(); ++it){
 		SDL_Rect temp = (*it)->get_location();
 		if(SDL_HasIntersection(&location, &temp)==SDL_TRUE){
 			std::cout << "We touched!\n";
@@ -198,7 +198,7 @@ int main(){
 		return 1;
 	}
 
-	std::vector<Mob*> mobs;
+	std::vector<std::shared_ptr<Mob>> mobs;
 
 	SDL_Rect size;
 	size.x = size.y = 0;
@@ -211,7 +211,7 @@ int main(){
 	SDL_Rect loc2;
 	loc2.x = loc2.y = 60;
 	loc2.w = loc2.h = 32;
-	Mob *mob = new Mob(game->getRenderer(), "toons.png", size, loc2, HERO_UP);
+	std::shared_ptr<Mob> mob (new Mob(game->getRenderer(), "toons.png", size, loc2, HERO_UP));
 	mobs.push_back(mob);
 
 	SDL_Event event;
@@ -244,7 +244,7 @@ int main(){
 
 		SDL_RenderClear(game->getRenderer());
 		s->render();
-		for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
+		for(std::vector<std::shared_ptr<Mob>>::iterator it = mobs.begin(); it != mobs.end(); ++it){
 			(*it)->update(mouse_x, mouse_y, s);
 			(*it)->render();
 		}
