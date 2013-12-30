@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include <string>
+#include <memory>
 
 typedef int StatPoint;
 
@@ -58,7 +59,7 @@ class Mob : public MobSprite, public Person{
 	public:
 		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 		using Sprite::update;
-		void update(int mx, int my, Hero **hero);
+		void update(int mx, int my, std::shared_ptr<Hero> hero);
 };
 
 class Hero: public HeroSprite, public Person{

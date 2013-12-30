@@ -81,14 +81,14 @@ Mob::Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect locat
 	MobSprite(renderer, path, size, location, default_clip){
 }
 
-void Mob::update(int mx, int my, Hero **hero){
+void Mob::update(int mx, int my, std::shared_ptr<Hero> hero){
 	SDL_Rect mouse;
 	mouse.x = mouse.w = mx;
 	mouse.y = mouse.h = my;
 
 	if(SDL_HasIntersection(&location, &mouse) && MOUSE_DOWN==1){
 		std::cout << "I've been touched!\n";
-		(**hero)->set_fighting(true);
+		hero->set_fighting(true);
 	}
 
 	if(is_fighting==true){
@@ -206,7 +206,7 @@ int main(){
 	SDL_Rect loc;
 	loc.x = loc.y = 10;
 	loc.w = loc.h = 32;
-	Hero *s = new Hero(game->getRenderer(), "toons.png", size, loc, HERO_UP);
+	std::shared_ptr<Hero> s (new Hero(game->getRenderer(), "toons.png", size, loc, HERO_UP));
 
 	SDL_Rect loc2;
 	loc2.x = loc2.y = 60;
@@ -245,7 +245,7 @@ int main(){
 		SDL_RenderClear(game->getRenderer());
 		s->render();
 		for(std::vector<Mob*>::iterator it = mobs.begin(); it != mobs.end(); ++it){
-			(*it)->update(mouse_x, mouse_y, &s);
+			(*it)->update(mouse_x, mouse_y, s);
 			(*it)->render();
 		}
 
