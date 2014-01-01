@@ -85,12 +85,12 @@ Mob::Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect locat
 	MobSprite(renderer, path, size, location, default_clip){
 }
 
-void Mob::update(int mx, int my){
+void Mob::walk(int mx, int my){
 	mx = mx + my;
 	return;
 }
 
-void Mob::update(int mx, int my, std::shared_ptr<Hero> hero){
+void Mob::walk(int mx, int my, std::shared_ptr<Hero> hero){
 	SDL_Rect mouse;
 	mouse.x = mouse.w = mx;
 	mouse.y = mouse.h = my;
@@ -109,7 +109,7 @@ HeroSprite::HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, 
 	Sprite(renderer, path, size, location, default_clip){
 }
 
-void HeroSprite::update(int mx, int my){
+void HeroSprite::walk(int mx, int my){
 	int xdir = mx-location.x;
 	int ydir = my-location.y;
 
@@ -136,8 +136,8 @@ Hero::Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect loc
 	HeroSprite(renderer, path, size, location, default_clip){
 }
 
-void Hero::update(int mx, int my){
-	HeroSprite::update(mx, my);
+void Hero::walk(int mx, int my){
+	HeroSprite::walk(mx, my);
 
 	if(get_fighting()==true){
 		std::cout << "Hero is fighting\n";
@@ -244,7 +244,7 @@ int main(){
 
 			if(event.type==SDL_MOUSEBUTTONDOWN){
 				MOUSE_DOWN = 1;
-				s->update(mouse_x, mouse_y);
+				s->walk(mouse_x, mouse_y);
 			}
 
 			if(event.type==SDL_MOUSEBUTTONUP){
@@ -253,7 +253,7 @@ int main(){
 
 			if(event.type==SDL_MOUSEMOTION && MOUSE_DOWN==1){
 				SDL_GetMouseState(&mouse_x, &mouse_y);
-				s->update(mouse_x, mouse_y);
+				s->walk(mouse_x, mouse_y);
 			}
 		}
 
@@ -262,7 +262,7 @@ int main(){
 		SDL_RenderClear(game->getRenderer());
 		s->render();
 		for(std::vector<std::shared_ptr<Mob>>::iterator it = mobs.begin(); it != mobs.end(); ++it){
-			(*it)->update(mouse_x, mouse_y, s);
+			(*it)->walk(mouse_x, mouse_y, s);
 			(*it)->render();
 		}
 

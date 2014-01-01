@@ -38,7 +38,7 @@ class Sprite{
 		Sprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 		~Sprite();
 		SDL_Rect get_location();
-		virtual void update(int mx, int my) = 0;
+		virtual void walk(int mx, int my) = 0;
 		void render();
 };
 
@@ -51,7 +51,7 @@ class HeroSprite : public Sprite{
 	public:
 		HeroSprite(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 
-		void update(int mx, int my);
+		void walk(int mx, int my);
 };
 
 class Hero;
@@ -60,15 +60,15 @@ class Mob : public MobSprite, public Person{
 	public:
 		Mob(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 
-		void update(int mx, int my, std::shared_ptr<Hero> hero);
-		void update(int mx, int my);
+		void walk(int mx, int my, std::shared_ptr<Hero> hero);
+		void walk(int mx, int my);
 };
 
 class Hero: public HeroSprite, public Person{
 	public:
 		Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 		void check_collision(std::vector<std::shared_ptr<Mob>> mobs);
-		void update(int mx, int my);
+		void walk(int mx, int my);
 };
 
 #endif
