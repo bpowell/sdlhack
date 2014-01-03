@@ -68,7 +68,7 @@ class Hero: public HeroSprite, public Person{
 	public:
 		Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect location, int default_clip);
 		void check_collision(std::vector<std::shared_ptr<Mob>> mobs);
-		void walk(int mx, int my);
+		void update();
 };
 
 #endif

@@ -136,9 +136,7 @@ Hero::Hero(SDL_Renderer *renderer, std::string path, SDL_Rect size, SDL_Rect loc
 	HeroSprite(renderer, path, size, location, default_clip){
 }
 
-void Hero::walk(int mx, int my){
-	HeroSprite::walk(mx, my);
-
+void Hero::update(){
 	if(get_fighting()==true){
 		std::cout << "Hero is fighting\n";
 	}
@@ -257,6 +255,7 @@ int main(){
 			}
 		}
 
+		s->update();
 		s->check_collision(mobs);
 
 		SDL_RenderClear(game->getRenderer());
