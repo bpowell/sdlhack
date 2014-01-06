@@ -6,17 +6,23 @@
 #include <memory>
 #include <map>
 
-class Sprite;
+class Sprite{
+	protected:
+		SDL_Renderer *renderer;
+		SDL_Texture *texture;
+};
+
+typedef std::shared_ptr<Sprite> SpritePtr;
 
 class SpriteManager{
 	private:
-		std::map<int,Sprite*> sprite_map;;
+		std::map<int,SpritePtr> sprite_map;;
 
 	public:
 		SpriteManager();
 		~SpriteManager();
 
-		int load(Sprite *sprite);
+		int load(SpritePtr sprite);
 };
 
 #endif

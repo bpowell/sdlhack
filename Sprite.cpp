@@ -6,6 +6,6 @@ SpriteManager::SpriteManager(){}
 SpriteManager::~SpriteManager(){
 }
 
-int SpriteManager::load(Sprite *sprite){
+int SpriteManager::load(SpritePtr sprite){
 	return 1;
 }
