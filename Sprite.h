@@ -6,10 +6,14 @@
 #include <memory>
 #include <map>
 
+#include "Vector2D.h"
+
 class Sprite{
 	protected:
 		SDL_Renderer *renderer;
 		SDL_Texture *texture;
+		Vector2D *location;
+		Vector2D *size;
 };
 
 typedef std::shared_ptr<Sprite> SpritePtr;
