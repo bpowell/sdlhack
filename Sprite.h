@@ -12,8 +12,13 @@ class Sprite{
 	protected:
 		SDL_Renderer *renderer;
 		SDL_Texture *texture;
-		Vector2D *location;
-		Vector2D *size;
+		Vector2D location;
+		Vector2D size;
+		int default_clip;
+
+	public:
+		Sprite(SDL_Renderer *renderer, std::string path, Vector2D location, Vector2D size, int default_clip);
+		~Sprite();
 };
 
 typedef std::shared_ptr<Sprite> SpritePtr;
