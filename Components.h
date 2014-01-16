@@ -11,4 +11,12 @@ class PositionComponent : public Component{
 		PositionComponent(float x, float y);
 };
 
+class SpriteComponent : public Component{
+	public:
+		SDL_Renderer *renderer;
+		SDL_Texture *texture;
+
+		SpriteComponent(SDL_Renderer *renderer, std::string path);
+};
+
 #endif
